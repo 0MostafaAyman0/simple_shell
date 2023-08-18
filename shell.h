@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <syc/types.h>
-#include <syc/wait.h>
-#include <syc/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
@@ -14,20 +14,21 @@
 
 #define BUFSIZE 1024
 #define TOK_BUFSIZE 128
-#define TOK_DELIM "\t\r\n\a"
+#define TOK_DELIM " \t\r\n\a"
 
-/*array of pointer of strings called the enviroment */
+/* Points to an array of pointers to strings called the "environment" */
 extern char **environ;
 
+
 /**
- * struct data
- * @pid : process ID of the shell
- * @status : last status of the shell
- * @args :token of the command line
- * @input : command line written by the user
- * @av :argument vactor
- * @counter : lines counter
- * @environ : enviroment variable
+ * struct data - struct that contains all relevant data on runtime
+ * @av: argument vector
+ * @input: command line written by the user
+ * @args: tokens of the command line
+ * @status: last status of the shell
+ * @counter: lines counter
+ * @_environ: environment variable
+ * @pid: process ID of the shell
  */
 typedef struct data
 {
@@ -41,59 +42,75 @@ typedef struct data
 } data_shell;
 
 /**
- * step_list_s
+ * struct sep_list_s - single linked list
+ * @separator: ; | &
+ * @next: next node
+ * Description: single linked list to store separators
  */
-
-typedef struct sep_list_c
+typedef struct sep_list_s
 {
 	char separator;
 	struct sep_list_s *next;
 } sep_list;
 
-/* line_list */
+/**
+ * struct line_list_s - single linked list
+ * @line: command line
+ * @next: next node
+ * Description: single linked list to store command lines
+ */
 typedef struct line_list_s
 {
 	char *line;
 	struct line_list_s *next;
 } line_list;
 
-/* r_var_list */
+/**
+ * struct r_var_list - single linked list
+ * @len_var: length of the variable
+ * @val: value of the variable
+ * @len_val: length of the value
+ * @next: next node
+ * Description: single linked list to store variables
+ */
 typedef struct r_var_list
 {
 	int len_var;
-	char *va1;
+	char *val;
 	int len_val;
 	struct r_var_list *next;
-}
-r_var;
-/* builtin_s */
+} r_var;
+
+/**
+ * struct builtin_s - Builtin struct for command args.
+ * @name: The name of the command builtin i.e cd, exit, env
+ * @f: data type pointer function.
+ */
 typedef struct builtin_s
 {
 	char *name;
 	int (*f)(data_shell *datash);
-
-}
-builtin_s;
+} builtin_t;
 
 sep_list *add_sep_node_end(sep_list **head, char sep);
 void free_sep_list(sep_list **head);
 line_list *add_line_node_end(line_list **head, char *line);
 void free_line_list(line_list **head);
 
-r_var *add_rvar_node(r_var **head, int 0var, char *var, int 1val);
-void free_rvar_node(r_var **head);
+r_var *add_rvar_node(r_var **head, int lvar, char *var, int lval);
+void free_rvar_list(r_var **head);
 char *_strcat(char *dest, const char *src);
-char *_strcpy(char *dest char *src);
+char *_strcpy(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
 char *_strchr(char *s, char c);
 int _strspn(char *s, char *accept);
 
 void _memcpy(void *newptr, const void *ptr, unsigned int size);
-void *_realloc_a(void *ptr, unsigned int old_size, unsigned int new_size);
-char **_realloc_b(char **ptr, unsigned int old size, unsigned int new_size);
-char *_strdup(cconst char *s);
-int _strlen(conset char *s);
-int cmmp_chars(char str[], const char *delim);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char **_realloc2(char **ptr, unsigned int old_size, unsigned int new_size);
+char *_strdup(const char *s);
+int _strlen(const char *s);
+int cmp_chars(char str[], const char *delim);
 char *_strtok(char str[], const char *delim);
 int _isdigit(const char *s);
 void rev_string(char *s);

@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * _str1 - concatenate two strings
+ * _strcat - concatenate two strings
  * @mos: char pointer the dest of the copied str
  * @off: const char pointer the source of str
  * Return: the mos
  */
-char *_str1(char *mos, const char *off)
+char *_strcat(char *mos, const char *off)
 {
 	int f;
 	int j;
@@ -16,7 +16,7 @@ char *_str1(char *mos, const char *off)
 
 	for (j = 0; off[j] != '\0'; j++)
 	{
-		mos[f] = src[j];
+		mos[f] = off[j];
 		f++;
 	}
 
@@ -24,12 +24,12 @@ char *_str1(char *mos, const char *off)
 	return (mos);
 }
 /**
- * *_str2 - Copies the string pointed to by src.
+ * *_strcpy - Copies the string pointed to by src.
  * @mos: Type char pointer the dest of the copied str
  * @off: Type char pointer the source of str
  * Return: the mos.
  */
-char *_str2(char *mos, char *off)
+char *_strcpy(char *mos, char *off)
 {
 
 	size_t q;
@@ -43,12 +43,12 @@ char *_str2(char *mos, char *off)
 	return (mos);
 }
 /**
- * _str3 - Function that compares two strings.
+ * _strcmp - Function that compares two strings.
  * @str1: type str compared
  * @str2: type str compared
  * Return: Always 0.
  */
-int _str3(char *str1, char *str2)
+int _strcmp(char *str1, char *str2)
 {
 	int w;
 
@@ -62,12 +62,12 @@ int _str3(char *str1, char *str2)
 	return (0);
 }
 /**
- * _str4 - locates a character in a string,
+ * _strchr - locates a character in a string,
  * @r: string.
  * @t: character.
  * Return: the pointer to the first occurrence of the character t.
  */
-char *_str4(char *r, char t)
+char *_strchr(char *r, char t)
 {
 	unsigned int m = 0;
 
@@ -79,27 +79,27 @@ char *_str4(char *r, char t)
 	return ('\0');
 }
 /**
- * _str5 - gets the length of a prefix substring.
+ * _strspn - gets the length of a prefix substring.
  * @i: initial segment.
  * @acc: accepted bytes.
  * Return: the number of accepted bytes.
  */
-int _str5(char *i, char *acc)
+int _strspn(char *i, char *acc)
 {
-	int o, p, exx;
+	int o, p, bool;
 
 	for (o = 0; *(i + o) != '\0'; o++)
 	{
-	exx = 1;
+	bool = 1;
 	for (p = 0; *(acc + p) != '\0'; p++)
 	{
 	if (*(i + o) == *(acc + p))
 	{
-	exx = 0;
+	bool = 0;
 	break;
 	}
 	}
-	if (exx == 1)
+	if (bool == 1)
 	break;
 	}
 	return (o);

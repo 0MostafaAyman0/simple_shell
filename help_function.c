@@ -1,52 +1,81 @@
 #include "shell.h"
 
 /**
- * exit_shell - exits the shell
- *
- * @datash: data relevant (status and args)
- * Return: 0 on success.
+ * _envir - Help information for the builtin env
+ * Return: no return
  */
-int exit_shell(data_shell *datash)
+void _envir(void)
 {
-	unsigned int unstatus;
-	int digitNum;
-	int length;
-	int bigDigit;
+	char *get_line = "env: env [option] [name=value] [command [args]]\n\t";
 
-	if (datash->args[1] != NULL)
-	{
-		unstatus = _atoi(datash->args[1]);
-		digitNum = _isdigit(datash->args[1]);
-		length = _strlen(datash->args[1]);
-		bigDigit = unstatus > (unsigned int)INT_MAX;
-		if (!digitNum || length > 10 || bigDigit)
-		{
-			_error(datash, 2);
-			datash->status = 2;
-			return (1);
-		}
-		datash->status = (unstatus % 256);
-	}
-	return (0);
+	write(STDOUT_FILENO, get_line, _strlen(get_line));
+	get_line = "Print the enviroment of the shell.\n";
+	write(STDOUT_FILENO, get_line, _strlen(get_line));
+
 }
 /**
- * exec_line - finds builtins and commands
- *
- * @datash: data relevant (args)
- * Return: 1 on success.
+ * _setenvir - Help information for the builtin setenv
+ * Return: no return
  */
-int exec_line(data_shell *datash)
+void _setenvir(void)
 {
-	int (*builtin)(data_shell *datash);
 
-	if (datash->args[0] == NULL)
-		return (1);
+	char *getlin = "setenv: setenv (const char *name, const char *value,";
 
-	builtin = get_builtin(datash->args[0]);
+	write(STDOUT_FILENO, getlin, _strlen(getlin));
+	getlin = "int replace)\n\t";
+	write(STDOUT_FILENO, getlin, _strlen(getlin));
+	getlin = "Add a new definition to the environment\n";
+	write(STDOUT_FILENO, getlin, _strlen(getlin));
+}
+/**
+ * _unsetenvir - Help information for the builtin unsetenv
+ * Return: no return
+ */
+void _unsetenvir(void)
+{
+	char *get_line = "unsetenv: unsetenv (const char *name)\n\t";
 
-	if (builtin != NULL)
-		return (builtin(datash));
+	write(STDOUT_FILENO, get_line, _strlen(get_line));
+	get_line = "Remove an entry completely from the environment\n";
+	write(STDOUT_FILENO, get_line, _strlen(get_line));
+}
 
-	return (cmd_exec(datash));
+
+/**
+ * _generalhelp - Entry point for help information for the help builtin
+ * Return: no return
+ */
+void _generalhelp(void)
+{
+	char *lin = "^-^ bash, version 1.0(1)-release\n";
+
+	write(STDOUT_FILENO, lin, _strlen(lin));
+	lin = "These cmds are defined internally.Type 'help' to see";
+	write(STDOUT_FILENO, lin, _strlen(lin));
+	lin = "Type 'help name' to find out more abt d function 'name'.\n\n ";
+	write(STDOUT_FILENO, lin, _strlen(lin));
+	lin = " alias: alias [name=['string']]\n cd: cd [-L|[-P [-e]] [-@]] ";
+	write(STDOUT_FILENO, lin, _strlen(lin));
+	lin = "[dir]\nexit: exit [n]\n env:env[option][name=value][command ";
+	write(STDOUT_FILENO, lin, _strlen(lin));
+	lin = "[args]]\n  setenv: setenv [variable] [value]\n  unsetenv: ";
+	write(STDOUT_FILENO, lin, _strlen(lin));
+	lin = "unsetenv [variable]\n";
+	write(STDOUT_FILENO, lin, _strlen(lin));
+}
+/**
+ * _exithelp - Help information fot the builint exit
+ * Return: no return
+ */
+void _exithelp(void)
+{
+	char *get_line = "exit: exit [n]\n Exit shell.\n";
+
+	write(STDOUT_FILENO, get_line, _strlen(get_line));
+	get_line = "Exits the shell with a status of N. If N is ommited, exit";
+	write(STDOUT_FILENO, get_line, _strlen(get_line));
+	get_line = "statusis that of the last command executed\n";
+	write(STDOUT_FILENO, get_line, _strlen(get_line));
 }
 
